@@ -1,3 +1,11 @@
+#   This file is part of TastyMotion project.
+#
+#   Homepage:   https://tastymotion.com
+#   GitHub:     https://github.com/TastyMotion/examples
+#
+#   Copyright (c) 2025 <dev727@tastymotion.com>.
+
+
 import math
 
 from tastymotion import Clip2D, Knob, Linear, preview
