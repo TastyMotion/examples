@@ -23,7 +23,7 @@ def Sunburst2D(
     contour_color: str, default='black'
         Color of the sunburst contour.
     contour_width: int, default=2
-        Width og the sunburst contour.
+        Width of the sunburst contour (use 0 to have no contour).
     duration: float, default=5
         Duration of the final clip in seconds.
     radius: float, default=200
@@ -41,6 +41,7 @@ def Sunburst2D(
     clip = Clip2D("sunburst", width, height)
     phi = Knob("phi")
 
+    clip.scissor_begin(0, 0, width, height)
     clip.translate(width / 2, height / 2)
     clip.rotate(phi)
 
@@ -60,6 +61,7 @@ def Sunburst2D(
             clip.line_to(radius * cos_, -radius * sin_)
             clip.line_to(0, 0)
         clip.rotate(360.0 / n)
+    clip.scissor_end()
 
     clip.tween(Linear(phi, 0, 360, duration))
 
@@ -67,15 +69,22 @@ def Sunburst2D(
 
 
 def MyClip():
-    return Sunburst2D(
-        clip_size=(1280, 720),
-        colors=["pink", "green", "blue"],
+    clip = Clip2D("main", 1200, 900)
+
+    sunburst = Sunburst2D(
+        clip_size=(1200, 900),
+        colors=["#90EE90", "#FFB2EF", "#87CEEB"],
         contour_color="black",
         contour_width=2,
-        duration=5,
-        radius=200,
-        repeat=3,
+        duration=7,
+        radius=900,
+        repeat=5,
     )
+
+    clip.add(sunburst)
+    clip.tween(sunburst.tween())
+
+    return clip
 
 
 if __name__ == "__main__":
