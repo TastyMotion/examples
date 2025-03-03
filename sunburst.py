@@ -49,7 +49,6 @@ def Sunburst2D(
     clip = Clip2D("sunburst", width, height)
     phi = Knob("phi")
 
-    clip.scissor_begin(0, 0, width, height)
     clip.translate(width / 2, height / 2)
     clip.rotate(phi)
 
@@ -69,28 +68,35 @@ def Sunburst2D(
             clip.line_to(radius * cos_, -radius * sin_)
             clip.line_to(0, 0)
         clip.rotate(360.0 / n)
-    clip.scissor_end()
 
     clip.tween(Linear(phi, 0, 360, duration))
 
     return clip
 
 
-def MyClip():
-    clip = Clip2D("main", 1200, 900)
+def Main2D():
+    # w, h = 3840, 2160  # 2160p / 4K
+    # w, h = 3200, 1800  # 1800p
 
-    sunburst = Sunburst2D(
-        clip_size=(1200, 900),
+    w, h = 1600, 900  # 900p
+
+    # w, h = 1280, 720 # 720p
+    # w, h = 1920, 1080  # 1080p / 2K
+    # w, h = 2560, 1440  # 1440p
+    clip = Clip2D("main", w, h)
+
+    sunburst_2d = Sunburst2D(
+        clip_size=(w, h),
         colors=["#90EE90", "#FFB2EF", "#87CEEB"],
         contour_color="black",
-        contour_width=2,
-        duration=7,
-        radius=900,
+        contour_width=4,
+        duration=5,
+        radius=400,
         repeat=5,
     )
 
-    clip.add(sunburst)
-    clip.tween(sunburst.tween())
+    clip.add(sunburst_2d)
+    clip.tween(sunburst_2d.tween())
 
     return clip
 
